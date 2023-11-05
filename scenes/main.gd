@@ -3,12 +3,12 @@ extends Node
 @export var snake_scene: PackedScene
 
 # game variables
-var score: int
-var game_started: bool = false
+var score := 0
+var game_started := false
 
 # grid variables
-var cells: int = 20
-var cell_size: int = 50
+const cells := 20
+const cell_size := 50
 
 # food variables
 var food_pos: Vector2
@@ -20,13 +20,14 @@ var snake_data: Array # grid coordinate of each segment
 var snake: Array # actual segment scenes
 
 # movement variables
-var start_pos = Vector2(9,9) # grid reference on 20x20 grid
-var up = Vector2(0, -1)
-var down = Vector2(0, 1)
-var left = Vector2(-1, 0)
-var right = Vector2(1, 0)
-var move_direction: Vector2
-var can_move: bool
+const start_pos := Vector2(9, 9) # grid reference on 20x20 grid
+
+const up := Vector2(0, -1)
+const down := Vector2(0, 1)
+const left := Vector2(-1, 0)
+const right := Vector2(1, 0)
+var move_direction := up
+var can_move := true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -36,11 +37,8 @@ func new_game():
 	get_tree().paused = false
 	get_tree().call_group("segments", "queue_free")
 	$GameOverMenu.hide()
-	score = 0
 	$Hud.get_node("ScoreLabel").text = "SCORE: " + str(score)
 	$GameOverMenu.get_node("FinalScoreLabel").text = "SCORE: " + str(score)
-	move_direction = up
-	can_move = true
 	generate_snake()
 	move_food()
 
@@ -50,7 +48,7 @@ func generate_snake():
 	snake.clear()
 	#starting with the start_pos, create tail segments vertically down
 	for i in range(3):
-		add_segment(start_pos + Vector2(0, 1))
+		add_segment(start_pos + down)
 
 func add_segment(pos):
 	snake_data.append(pos)
