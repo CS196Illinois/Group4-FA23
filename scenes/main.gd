@@ -90,6 +90,7 @@ func move_snake():
 func start_game():
 	game_started = true
 	$MoveTimer.start()
+	$MoveTimer.wait_time = 0.2
 
 
 func _on_move_timer_timeout():
@@ -107,7 +108,7 @@ func _on_move_timer_timeout():
 	check_food_eaten()
 	
 func check_out_of_bounds():
-	if snake_data[0].x < 0 or snake_data[0].x > cells - 1 or snake_data[0].y < 0 or snake_data[0].y > cells - 1:
+	if snake_data[0].x < 2 or snake_data[0].x > cells - 2 or snake_data[0].y < 1 or snake_data[0].y > cells - 2:
 		end_game()
 
 func check_self_eaten():
@@ -118,6 +119,8 @@ func check_self_eaten():
 func check_food_eaten():
 	if snake_data[0] == food_pos:
 		score += 1
+		$MoveTimer.wait_time = $MoveTimer.wait_time * 0.95
+		$MoveTimer.wait_time = clamp($MoveTimer.wait_time, 0.05, 0.2)
 		$Hud.get_node("ScoreLabel").text = "SCORE: " + str(score)
 		$GameOverMenu.get_node("FinalScoreLabel").text = "SCORE: " + str(score)
 		add_segment(old_data[-1])
@@ -126,7 +129,7 @@ func check_food_eaten():
 func move_food():
 	while regen_food:
 		regen_food = false
-		food_pos = Vector2(randi_range(0, cells - 1), randi_range(0, cells - 1))
+		food_pos = Vector2(randi_range(1, cells - 2), randi_range(1, cells - 2))
 		for i in snake_data:
 			if food_pos == i:
 				regen_food = true
