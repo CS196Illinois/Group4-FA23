@@ -3,12 +3,12 @@ extends Node
 @export var snake_scene: PackedScene
 
 # game variables
-var score: int
-var game_started: bool = false
+var score := 0
+var game_started := false
 
 # grid variables
-var cells: int = 20
-var cell_size: int = 50
+const cells := 20
+const cell_size := 50
 
 # food variables
 var food_pos: Vector2
@@ -20,13 +20,14 @@ var snake_data: Array # grid coordinate of each segment
 var snake: Array # actual segment scenes
 
 # movement variables
-var start_pos = Vector2(9,9) # grid reference on 20x20 grid
-var up = Vector2(0, -1)
-var down = Vector2(0, 1)
-var left = Vector2(-1, 0)
-var right = Vector2(1, 0)
-var move_direction: Vector2
-var can_move: bool
+const start_pos := Vector2(9, 9) # grid reference on 20x20 grid
+
+const up := Vector2(0, -1)
+const down := Vector2(0, 1)
+const left := Vector2(-1, 0)
+const right := Vector2(1, 0)
+var move_direction := up
+var can_move := true
 
 # Music variables
 @onready var twoDTheme = $twoDTheme
@@ -42,11 +43,8 @@ func new_game():
 	get_tree().paused = false
 	get_tree().call_group("segments", "queue_free")
 	$GameOverMenu.hide()
-	score = 0
 	$Hud.get_node("ScoreLabel").text = "SCORE: " + str(score)
 	$GameOverMenu.get_node("FinalScoreLabel").text = "SCORE: " + str(score)
-	move_direction = up
-	can_move = true
 	generate_snake()
 	move_food()
 
@@ -56,7 +54,7 @@ func generate_snake():
 	snake.clear()
 	#starting with the start_pos, create tail segments vertically down
 	for i in range(3):
-		add_segment(start_pos + Vector2(0, 1))
+		add_segment(start_pos + down)
 
 func add_segment(pos):
 	snake_data.append(pos)
@@ -97,6 +95,7 @@ func start_game():
 	game_started = true
 	$MoveTimer.start()
 	twoDTheme.play()
+	$MoveTimer.wait_time = 0.2
 
 
 func _on_move_timer_timeout():
@@ -114,7 +113,7 @@ func _on_move_timer_timeout():
 	check_food_eaten()
 	
 func check_out_of_bounds():
-	if snake_data[0].x < 0 or snake_data[0].x > cells - 1 or snake_data[0].y < 0 or snake_data[0].y > cells - 1:
+	if snake_data[0].x < 2 or snake_data[0].x > cells - 2 or snake_data[0].y < 1 or snake_data[0].y > cells - 2:
 		end_game()
 
 func check_self_eaten():
@@ -126,6 +125,8 @@ func check_food_eaten():
 	if snake_data[0] == food_pos:
 		score += 1
 		appleCrunch.play()
+		$MoveTimer.wait_time = $MoveTimer.wait_time * 0.95
+		$MoveTimer.wait_time = clamp($MoveTimer.wait_time, 0.05, 0.2)
 		$Hud.get_node("ScoreLabel").text = "SCORE: " + str(score)
 		$GameOverMenu.get_node("FinalScoreLabel").text = "SCORE: " + str(score)
 		add_segment(old_data[-1])
@@ -134,7 +135,7 @@ func check_food_eaten():
 func move_food():
 	while regen_food:
 		regen_food = false
-		food_pos = Vector2(randi_range(0, cells - 1), randi_range(0, cells - 1))
+		food_pos = Vector2(randi_range(1, cells - 2), randi_range(1, cells - 2))
 		for i in snake_data:
 			if food_pos == i:
 				regen_food = true
