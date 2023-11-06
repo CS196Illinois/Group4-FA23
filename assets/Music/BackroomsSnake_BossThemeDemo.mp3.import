@@ -2,23 +2,13 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-<<<<<<< Updated upstream:assets/Sound/BackroomsSnake_BossThemeDemo.mp3.import
-uid="uid://ivwe7sgd7asd"
-path="res://.godot/imported/BackroomsSnake_BossThemeDemo.mp3-ad46ee3822c61b722ac5662684720358.mp3str"
-
-[deps]
-
-source_file="res://assets/Sound/BackroomsSnake_BossThemeDemo.mp3"
-dest_files=["res://.godot/imported/BackroomsSnake_BossThemeDemo.mp3-ad46ee3822c61b722ac5662684720358.mp3str"]
-=======
-uid="uid://datdvllhnh4ak"
+uid="uid://co7j40j1sfpc8"
 path="res://.godot/imported/BackroomsSnake_BossThemeDemo.mp3-f4a5624e756a13133ac06134f8f18dd5.mp3str"
 
 [deps]
 
 source_file="res://assets/Music/BackroomsSnake_BossThemeDemo.mp3"
 dest_files=["res://.godot/imported/BackroomsSnake_BossThemeDemo.mp3-f4a5624e756a13133ac06134f8f18dd5.mp3str"]
->>>>>>> Stashed changes:assets/Music/BackroomsSnake_BossThemeDemo.mp3.import
 
 [params]
 
