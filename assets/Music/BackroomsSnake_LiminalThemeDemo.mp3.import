@@ -1,0 +1,29 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+<<<<<<< Updated upstream:assets/Sound/BackroomsSnake_LiminalThemeDemo.mp3.import
+uid="uid://vqjqlkvxyl5a"
+path="res://.godot/imported/BackroomsSnake_LiminalThemeDemo.mp3-dbeb329db4fdac9b31d17dd477bf7951.mp3str"
+
+[deps]
+
+source_file="res://assets/Sound/BackroomsSnake_LiminalThemeDemo.mp3"
+dest_files=["res://.godot/imported/BackroomsSnake_LiminalThemeDemo.mp3-dbeb329db4fdac9b31d17dd477bf7951.mp3str"]
+=======
+uid="uid://35h0fvxpbejl"
+path="res://.godot/imported/BackroomsSnake_LiminalThemeDemo.mp3-be24b3b675cfedfbe62ddf16a06eab75.mp3str"
+
+[deps]
+
+source_file="res://assets/Music/BackroomsSnake_LiminalThemeDemo.mp3"
+dest_files=["res://.godot/imported/BackroomsSnake_LiminalThemeDemo.mp3-be24b3b675cfedfbe62ddf16a06eab75.mp3str"]
+>>>>>>> Stashed changes:assets/Music/BackroomsSnake_LiminalThemeDemo.mp3.import
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

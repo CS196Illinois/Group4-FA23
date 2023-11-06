@@ -1,0 +1,35 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+<<<<<<< Updated upstream:assets/Sound/BackroomsSnake_2DTheme.mp3.import
+uid="uid://80s8cm0fv3fg"
+path="res://.godot/imported/BackroomsSnake_2DTheme.mp3-c33ab739d0fa69f2a6e6de25610f8d14.mp3str"
+
+[deps]
+
+source_file="res://assets/Sound/BackroomsSnake_2DTheme.mp3"
+dest_files=["res://.godot/imported/BackroomsSnake_2DTheme.mp3-c33ab739d0fa69f2a6e6de25610f8d14.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+=======
+uid="uid://dob67p8vuaiyt"
+path="res://.godot/imported/BackroomsSnake_2DTheme.mp3-f72567cd341d01016c1c51611e0656db.mp3str"
+
+[deps]
+
+source_file="res://assets/Music/BackroomsSnake_2DTheme.mp3"
+dest_files=["res://.godot/imported/BackroomsSnake_2DTheme.mp3-f72567cd341d01016c1c51611e0656db.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+>>>>>>> Stashed changes:assets/Music/BackroomsSnake_2DTheme.mp3.import
+beat_count=0
+bar_beats=4

@@ -28,6 +28,12 @@ var right = Vector2(1, 0)
 var move_direction: Vector2
 var can_move: bool
 
+# Music variables
+@onready var twoDTheme = $twoDTheme
+@onready var appleCrunch = $apple_crunch
+@onready var gameOver = $game_over
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	new_game()
@@ -90,6 +96,7 @@ func move_snake():
 func start_game():
 	game_started = true
 	$MoveTimer.start()
+	twoDTheme.play()
 
 
 func _on_move_timer_timeout():
@@ -118,6 +125,7 @@ func check_self_eaten():
 func check_food_eaten():
 	if snake_data[0] == food_pos:
 		score += 1
+		appleCrunch.play()
 		$Hud.get_node("ScoreLabel").text = "SCORE: " + str(score)
 		$GameOverMenu.get_node("FinalScoreLabel").text = "SCORE: " + str(score)
 		add_segment(old_data[-1])
@@ -134,6 +142,7 @@ func move_food():
 	regen_food = true
 
 func end_game():
+	twoDTheme.stop()
 	$GameOverMenu.show()
 	$MoveTimer.stop()
 	game_started = false
