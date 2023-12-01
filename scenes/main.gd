@@ -28,7 +28,6 @@ const left := Vector2(-1, 0)
 const right := Vector2(1, 0)
 var move_direction := up
 var can_move := true
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	new_game()
@@ -39,6 +38,9 @@ func new_game():
 	$GameOverMenu.hide()
 	$Hud.get_node("ScoreLabel").text = "SCORE: " + str(score)
 	$GameOverMenu.get_node("FinalScoreLabel").text = "SCORE: " + str(score)
+	$DistortionLocation2.material.set_shader_parameter("scrollRate", Vector2(0.1, 0.1))
+	$DistortionLocation2.material.set_shader_parameter("displacement", 0.00)
+	gen_distortion()
 	generate_snake()
 	move_food()
 
@@ -118,6 +120,11 @@ func check_food_eaten():
 	if snake_data[0] == food_pos:
 		score += 1
 		$MoveTimer.wait_time = $MoveTimer.wait_time * 0.95
+		if score == 10:
+			$DistortionLocation2.material.set_shader_parameter("displacement", 0.005)
+		if score % 3 == 0:
+			$DistortionLocation2.material.set_shader_parameter("scrollRate", $DistortionLocation2.material.get_shader_parameter("scrollRate") + Vector2(0.1, 0.1))
+			$DistortionLocation2.material.set_shader_parameter("displacement", clamp(($DistortionLocation2.material.get_shader_parameter("displacement") + 0.005), 0.0, 0.2))
 		$MoveTimer.wait_time = clamp($MoveTimer.wait_time, 0.05, 0.2)
 		$Hud.get_node("ScoreLabel").text = "SCORE: " + str(score)
 		$GameOverMenu.get_node("FinalScoreLabel").text = "SCORE: " + str(score)
@@ -133,6 +140,22 @@ func move_food():
 				regen_food = true
 	$Food.position = (food_pos * cell_size) + Vector2(0, cell_size)
 	regen_food = true
+	
+func gen_distortion():
+	var placement = randi_range(0, 20)
+	var edges = [Vector2(placement, 20), Vector2(placement, 0), Vector2(20, placement), Vector2(0, placement)]
+	var placementNum = randi_range(0, edges.size() - 1)
+	var distortionPos: Vector2 = edges[placementNum]
+	var noiseTexture: NoiseTexture2D = $DistortionLocation2.material.get_shader_parameter("distortionTexture")
+	if (placementNum < 2):
+		noiseTexture.width = 200
+		$DistortionLocation2.scale.x = 2
+	else:
+		noiseTexture.height = 200
+		$DistortionLocation2.scale.y = 2
+	$DistortionLocation2.position.x = distortionPos.x * cell_size
+	$DistortionLocation2.position.y = distortionPos.y * cell_size + 50
+	
 
 func end_game():
 	$GameOverMenu.show()

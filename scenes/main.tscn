@@ -1,14 +1,13 @@
-[gd_scene load_steps=19 format=3 uid="uid://covp08gbfgtsi"]
+[gd_scene load_steps=15 format=3 uid="uid://covp08gbfgtsi"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_6q2pv"]
 [ext_resource type="PackedScene" uid="uid://dl1edwake2lg4" path="res://scenes/snake_segment.tscn" id="2_k0oat"]
 [ext_resource type="PackedScene" uid="uid://dacuovia1j4ei" path="res://scenes/hud.tscn" id="3_dm3qm"]
 [ext_resource type="Texture2D" uid="uid://b5wbnkwkdfnww" path="res://assets/DoomSnakeGrassTileset.png" id="3_od7tq"]
-[ext_resource type="Texture2D" uid="uid://cprfk4ehf201m" path="res://icon.svg" id="4_c6u0s"]
 [ext_resource type="Texture2D" uid="uid://vu6i86jc7le0" path="res://assets/DoomSnakeFenceVariants.png" id="4_kcwuv"]
 [ext_resource type="Texture2D" uid="uid://d15v5qinsjcdi" path="res://assets/apple.png" id="5_yoqqq"]
+[ext_resource type="PackedScene" uid="uid://c8jbutxli568m" path="res://distortion_location_2.tscn" id="6_j3bju"]
 [ext_resource type="PackedScene" uid="uid://c5c00hvgtwva" path="res://scenes/game_over_menu.tscn" id="6_vriwy"]
-[ext_resource type="Shader" path="res://scenes/screenDistortion.gdshader" id="7_ukksw"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_5osb4"]
 tile_data = PackedInt32Array(0, 65536, 131072, 65536, 65536, 262144, 131072, 65536, 262144, 196608, 65536, 196608, 1, 65536, 65536, 65537, 65536, 196608, 131073, 65536, 131072, 196609, 65536, 65536, 2, 65536, 262144, 65538, 65536, 131072, 131074, 65536, 131072, 196610, 65536, 65536, 3, 65536, 196608, 65539, 65536, 131072, 131075, 65536, 196608, 196611, 65536, 262144)
@@ -138,21 +137,6 @@ texture_region_size = Vector2i(10, 10)
 tile_size = Vector2i(10, 10)
 sources/0 = SubResource("TileSetAtlasSource_jp5m2")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_jj8x2"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kowoo"]
-width = 50
-height = 1000
-seamless = true
-seamless_blend_skirt = 0.594
-bump_strength = 32.0
-noise = SubResource("FastNoiseLite_jj8x2")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dx4kc"]
-shader = ExtResource("7_ukksw")
-shader_parameter/scrollRate = Vector2(0.065, -0.045)
-shader_parameter/distortionTexture = SubResource("NoiseTexture2D_kowoo")
-
 [node name="Main" type="Node"]
 script = ExtResource("1_6q2pv")
 snake_scene = ExtResource("2_k0oat")
@@ -177,25 +161,24 @@ cell_quadrant_size = 10
 format = 2
 layer_0/tile_data = PackedInt32Array(-589834, 65536, 1, -589833, 131072, 0, -589832, 196608, 0, -589831, 131072, 0, -589830, 196608, 0, -589829, 131072, 0, -589828, 196608, 0, -589827, 131072, 0, -589826, 196608, 0, -589825, 131072, 0, -655359, 131072, 0, -655357, 131072, 0, -655355, 131072, 0, -655353, 131072, 0, -655352, 196608, 0, -655351, 0, 196609, -524298, 65536, 65536, -393226, 65536, 65536, -131082, 65536, 262144, -10, 65536, 262144, 131062, 65536, 262144, 262134, 65536, 262144, 393206, 65536, 262144, 524278, 65536, 262144, 458742, 0, 196608, 327670, 0, 196608, 196598, 0, 196608, 65526, 0, 196608, -65546, 0, 196608, -196618, 0, 196608, -327690, 0, 196608, -458762, 0, 196608, 589814, 0, 196608, 655350, 0, 65537, 655351, 196608, 65536, 655353, 196608, 65536, 655355, 196608, 65536, 655357, 196608, 65536, 655359, 196608, 65536, 589825, 196608, 65536, 589827, 196608, 65536, 589829, 196608, 65536, 589831, 196608, 65536, 589826, 131072, 131072, 589828, 131072, 131072, 589830, 131072, 131072, 589824, 131072, 131072, 655358, 131072, 131072, 655356, 131072, 131072, 655354, 131072, 131072, 655352, 131072, 131072, 589832, 131072, 131072, -589815, 0, 131072, -458743, 0, 131072, -327671, 0, 131072, -196599, 0, 131072, -65527, 0, 131072, 65545, 0, 131072, 196617, 0, 131072, 327689, 0, 131072, 524297, 65536, 131072, -262154, 65536, 262144, 589833, 65536, 65537, 458761, 0, 131072, 393225, 65536, 131072, 262153, 65536, 131072, 131081, 65536, 131072, 9, 65536, 131072, -131063, 65536, 131072, -262135, 65536, 131072, -393207, 65536, 131072, -524279, 65536, 131072, -655360, 196608, 0, -655358, 196608, 0, -655356, 196608, 0, -655354, 196608, 0)
 
-[node name="DistortionLocation2" type="Sprite2D" parent="."]
-texture_repeat = 2
-material = SubResource("ShaderMaterial_dx4kc")
-position = Vector2(8, 552)
-scale = Vector2(0.652346, 7.80469)
-texture = ExtResource("4_c6u0s")
+[node name="Food" type="Sprite2D" parent="."]
+texture = ExtResource("5_yoqqq")
+offset = Vector2(25, 25)
+
+[node name="DistortionLocation2" parent="." instance=ExtResource("6_j3bju")]
+position = Vector2(501, 525.5)
+scale = Vector2(0.95, 1)
 
 [node name="Hud" parent="." instance=ExtResource("3_dm3qm")]
 
 [node name="MoveTimer" type="Timer" parent="."]
 wait_time = 0.226
 
-[node name="Food" type="Sprite2D" parent="."]
-texture = ExtResource("5_yoqqq")
-offset = Vector2(25, 25)
-
 [node name="GameOverMenu" parent="." instance=ExtResource("6_vriwy")]
 process_mode = 2
 visible = false
+
+[node name="DistortionLocation3" type="Sprite2D" parent="."]
 
 [connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]
 [connection signal="restart" from="GameOverMenu" to="." method="_on_game_over_menu_restart"]
