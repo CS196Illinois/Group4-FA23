@@ -28,6 +28,12 @@ const left := Vector2(-1, 0)
 const right := Vector2(1, 0)
 var move_direction := up
 var can_move := true
+
+# Music variables
+@onready var twoDTheme = $twoDTheme
+@onready var appleCrunch = $apple_crunch
+@onready var gameOver = $game_over
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	new_game()
@@ -90,6 +96,7 @@ func move_snake():
 func start_game():
 	game_started = true
 	$MoveTimer.start()
+	twoDTheme.play()
 	$MoveTimer.wait_time = 0.2
 
 
@@ -119,6 +126,7 @@ func check_self_eaten():
 func check_food_eaten():
 	if snake_data[0] == food_pos:
 		score += 1
+		appleCrunch.play()
 		$MoveTimer.wait_time = $MoveTimer.wait_time * 0.95
 		if score == 10:
 			$DistortionLocation2.material.set_shader_parameter("displacement", 0.005)
@@ -158,6 +166,7 @@ func gen_distortion():
 	
 
 func end_game():
+	twoDTheme.stop()
 	$GameOverMenu.show()
 	$MoveTimer.stop()
 	game_started = false

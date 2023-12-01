@@ -1,5 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://covp08gbfgtsi"]
 
+
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_6q2pv"]
 [ext_resource type="PackedScene" uid="uid://dl1edwake2lg4" path="res://scenes/snake_segment.tscn" id="2_k0oat"]
 [ext_resource type="PackedScene" uid="uid://dacuovia1j4ei" path="res://scenes/hud.tscn" id="3_dm3qm"]
@@ -8,6 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://d15v5qinsjcdi" path="res://assets/apple.png" id="5_yoqqq"]
 [ext_resource type="PackedScene" uid="uid://c8jbutxli568m" path="res://distortion_location_2.tscn" id="6_j3bju"]
 [ext_resource type="PackedScene" uid="uid://c5c00hvgtwva" path="res://scenes/game_over_menu.tscn" id="6_vriwy"]
+[ext_resource type="Shader" path="res://scenes/screenDistortion.gdshader" id="7_ukksw"]
+[ext_resource type="AudioStream" uid="uid://crocksmq6qb75" path="res://assets/SFX/apple_crunch.wav" id="10_qdaby"]
+[ext_resource type="AudioStream" uid="uid://i803uidhy1cy" path="res://assets/Music/BackroomsSnake_2DTheme.mp3" id="11_oskpg"]
+[ext_resource type="AudioStream" uid="uid://b8h7ugketrt0j" path="res://assets/SFX/game_over.wav" id="12_p020k"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_5osb4"]
 tile_data = PackedInt32Array(0, 65536, 131072, 65536, 65536, 262144, 131072, 65536, 262144, 196608, 65536, 196608, 1, 65536, 65536, 65537, 65536, 196608, 131073, 65536, 131072, 196609, 65536, 65536, 2, 65536, 262144, 65538, 65536, 131072, 131074, 65536, 131072, 196610, 65536, 65536, 3, 65536, 196608, 65539, 65536, 131072, 131075, 65536, 196608, 196611, 65536, 262144)
@@ -178,7 +183,20 @@ wait_time = 0.226
 process_mode = 2
 visible = false
 
+[node name="apple_crunch" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_qdaby")
+volume_db = 11.243
+pitch_scale = 0.89
+
+[node name="twoDTheme" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_oskpg")
+volume_db = -15.928
+
+[node name="game_over" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_p020k")
+
 [node name="DistortionLocation3" type="Sprite2D" parent="."]
+
 
 [connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]
 [connection signal="restart" from="GameOverMenu" to="." method="_on_game_over_menu_restart"]
