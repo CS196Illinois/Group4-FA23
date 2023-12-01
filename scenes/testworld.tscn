@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://sflmnrfnrri2"]
+
+[ext_resource type="PackedScene" uid="uid://qv54bkwwu4q5" path="res://scenes/snakeNew.tscn" id="1_mw12p"]
+
+[node name="testworld" type="Node2D"]
+
+[node name="Snake" parent="." instance=ExtResource("1_mw12p")]
