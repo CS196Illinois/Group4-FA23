@@ -1,6 +1,9 @@
 extends Node
 
 @export var snake_scene: PackedScene
+@export var snBody = preload("res://scenes/body.tscn")
+var SnakeSegment
+var body
 
 # game variables
 var score := 0
@@ -55,15 +58,19 @@ func generate_snake():
 	snake_data.clear()
 	snake.clear()
 	#starting with the start_pos, create tail segments vertically down
-	for i in range(3):
-		add_segment(start_pos + down)
+	for i in range(1):
+		snake_data.append(start_pos + down)
+		SnakeSegment = snake_scene.instantiate()
+		SnakeSegment.position = (start_pos + down * cell_size) + Vector2(0, cell_size)
+		add_child(SnakeSegment)
+		snake.append(SnakeSegment)
 
 func add_segment(pos):
 	snake_data.append(pos)
-	var SnakeSegment = snake_scene.instantiate()
-	SnakeSegment.position = (pos * cell_size) + Vector2(0, cell_size)
-	add_child(SnakeSegment)
-	snake.append(SnakeSegment)
+	body = snBody.instantiate()
+	body.position = (pos * cell_size) + Vector2(0, cell_size)
+	add_child(body)
+	snake.append(body)
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -73,25 +80,31 @@ func move_snake():
 	if can_move:
 		#update mvmt from key press
 		if Input.is_action_just_pressed("move_down") and move_direction != up:
+			SnakeSegment.rotation_degrees=90
 			move_direction = down
 			can_move = false
 			if (game_started == false):
 				start_game()
 		if Input.is_action_just_pressed("move_up") and move_direction != down:
+			SnakeSegment.rotation_degrees=-90
 			move_direction = up
 			can_move = false
 			if (game_started == false):
 				start_game()
+			
 		if Input.is_action_just_pressed("move_left") and move_direction != right:
+			SnakeSegment.rotation_degrees=-180
 			move_direction = left
 			can_move = false
 			if (game_started == false):
 				start_game()
 		if Input.is_action_just_pressed("move_right") and move_direction != left:
+			SnakeSegment.rotation_degrees=0
 			move_direction = right
 			can_move = false
 			if (game_started == false):
 				start_game()
+		
 
 func start_game():
 	game_started = true
@@ -166,6 +179,8 @@ func gen_distortion():
 	
 
 func end_game():
+	snake.clear()
+	old_data.clear()
 	twoDTheme.stop()
 	$GameOverMenu.show()
 	$MoveTimer.stop()
@@ -173,4 +188,6 @@ func end_game():
 	get_tree().paused = true
 	
 func _on_game_over_menu_restart():
+	snake.clear()
+	score = 0
 	new_game()

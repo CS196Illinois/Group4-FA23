@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dl1edwake2lg4"]
+
+[ext_resource type="Texture2D" uid="uid://chw7fum0bjrop" path="res://Project/Head.png" id="1_8mdq5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sylp7"]
+size = Vector2(177.99, 192.494)
+
+[node name="Head" type="Sprite2D"]
+position = Vector2(24, -2)
+scale = Vector2(0.263022, 0.263022)
+texture = ExtResource("1_8mdq5")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(117.861, -38.0196)
+rotation = -1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-36.4695, -114.059)
+shape = SubResource("RectangleShape2D_sylp7")
