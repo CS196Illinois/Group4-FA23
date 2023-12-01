@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://qv54bkwwu4q5"]
+
+[ext_resource type="Script" path="res://scenes/snakeNew.gd" id="1_73fvo"]
+[ext_resource type="Texture2D" uid="uid://bdtpatuv2rkn2" path="res://assets/New Piskel (2).png" id="2_u123i"]
+
+[sub_resource type="Animation" id="Animation_2ujt8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_2uril"]
+resource_name = "turn up"
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2i(0, 0), Vector2i(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4veps"]
+_data = {
+"RESET": SubResource("Animation_2ujt8"),
+"turn up": SubResource("Animation_2uril")
+}
+
+[node name="Snake" type="CharacterBody2D"]
+script = ExtResource("1_73fvo")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(396.328, 304.328)
+scale = Vector2(0.678407, 0.678407)
+texture = ExtResource("2_u123i")
+hframes = 4
+vframes = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4veps")
+}
