@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://subl4hfh8up8"]
+
+[ext_resource type="VideoStream" path="res://assets/snake_free.ogv" id="1_y3msb"]
+
+[node name="Video" type="Node2D"]
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+ratio = 1.7778
+stretch_mode = 3
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="AspectRatioContainer"]
+layout_mode = 2
+stream = ExtResource("1_y3msb")
+autoplay = true
