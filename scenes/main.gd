@@ -94,6 +94,7 @@ func move_snake():
 			can_move = false
 			if (game_started == false):
 				start_game()
+			
 		if Input.is_action_just_pressed("move_left") and move_direction != right:
 			snake_segment.rotation_degrees = 180
 			move_direction = left
@@ -106,6 +107,7 @@ func move_snake():
 			can_move = false
 			if (game_started == false):
 				start_game()
+		
 
 func start_game():
 	game_started = true
@@ -183,6 +185,8 @@ func gen_distortion():
 	
 
 func end_game():
+	snake.clear()
+	old_data.clear()
 	twoDTheme.stop()
 	$GameOverMenu.show()
 	$MoveTimer.stop()
