@@ -1,15 +1,12 @@
-[gd_scene load_steps=15 format=3 uid="uid://covp08gbfgtsi"]
-
+[gd_scene load_steps=17 format=3 uid="uid://covp08gbfgtsi"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_6q2pv"]
-[ext_resource type="PackedScene" uid="uid://dl1edwake2lg4" path="res://scenes/snake_segment.tscn" id="2_k0oat"]
 [ext_resource type="PackedScene" uid="uid://dacuovia1j4ei" path="res://scenes/hud.tscn" id="3_dm3qm"]
 [ext_resource type="Texture2D" uid="uid://b5wbnkwkdfnww" path="res://assets/DoomSnakeGrassTileset.png" id="3_od7tq"]
 [ext_resource type="Texture2D" uid="uid://vu6i86jc7le0" path="res://assets/DoomSnakeFenceVariants.png" id="4_kcwuv"]
 [ext_resource type="Texture2D" uid="uid://d15v5qinsjcdi" path="res://assets/apple.png" id="5_yoqqq"]
 [ext_resource type="PackedScene" uid="uid://c8jbutxli568m" path="res://distortion_location_2.tscn" id="6_j3bju"]
 [ext_resource type="PackedScene" uid="uid://c5c00hvgtwva" path="res://scenes/game_over_menu.tscn" id="6_vriwy"]
-[ext_resource type="Shader" path="res://scenes/screenDistortion.gdshader" id="7_ukksw"]
 [ext_resource type="AudioStream" uid="uid://crocksmq6qb75" path="res://assets/SFX/apple_crunch.wav" id="10_qdaby"]
 [ext_resource type="AudioStream" uid="uid://i803uidhy1cy" path="res://assets/Music/BackroomsSnake_2DTheme.mp3" id="11_oskpg"]
 [ext_resource type="AudioStream" uid="uid://b8h7ugketrt0j" path="res://assets/SFX/game_over.wav" id="12_p020k"]
@@ -144,7 +141,6 @@ sources/0 = SubResource("TileSetAtlasSource_jp5m2")
 
 [node name="Main" type="Node"]
 script = ExtResource("1_6q2pv")
-snake_scene = ExtResource("2_k0oat")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 visible = false
@@ -194,9 +190,6 @@ volume_db = -15.928
 
 [node name="game_over" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("12_p020k")
-
-[node name="DistortionLocation3" type="Sprite2D" parent="."]
-
 
 [connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]
 [connection signal="restart" from="GameOverMenu" to="." method="_on_game_over_menu_restart"]

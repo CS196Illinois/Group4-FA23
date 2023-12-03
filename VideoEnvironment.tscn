@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://t83geluvtjrj"]
+
+[ext_resource type="PackedScene" uid="uid://cxdcjkjsw7n4o" path="res://Player.tscn" id="1_1kr11"]
+[ext_resource type="Script" path="res://PlayerControl.gd" id="2_sxewo"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_iqtrv"]
+size = Vector2(10, 10)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_qfsuc"]
+
+[sub_resource type="Environment" id="Environment_d2sk5"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.873602, 0)
+mesh = SubResource("PlaneMesh_iqtrv")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.982284, 0)
+shape = SubResource("ConcavePolygonShape3D_qfsuc")
+
+[node name="RigidBody3D" parent="." instance=ExtResource("1_1kr11")]
+script = ExtResource("2_sxewo")
+
+[node name="TwistPivot" type="Node3D" parent="RigidBody3D"]
+
+[node name="PitchPivot" type="Node3D" parent="RigidBody3D/TwistPivot"]
+
+[node name="Camera3D" type="Camera3D" parent="RigidBody3D/TwistPivot/PitchPivot"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_d2sk5")
