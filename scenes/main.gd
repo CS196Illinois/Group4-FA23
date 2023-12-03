@@ -30,6 +30,7 @@ const down := Vector2(0, 1)
 const left := Vector2(-1, 0)
 const right := Vector2(1, 0)
 const offset := Vector2(25, 25)
+var threshold = 5
 var move_direction := up
 var can_move := true
 var rotated = false
@@ -142,12 +143,12 @@ func check_food_eaten():
 		score += 1
 		appleCrunch.play()
 		$MoveTimer.wait_time = $MoveTimer.wait_time * 0.95
-		if score == 10:
+		if score == threshold:
 			gen_distortion()
 			
-		if score % 3 == 0 and score > 10:
-			$DistortionLocation2.material.set_shader_parameter("scrollRate", $DistortionLocation2.material.get_shader_parameter("scrollRate") + Vector2(0.1, 0.1))
-			$DistortionLocation2.material.set_shader_parameter("displacement", clamp(($DistortionLocation2.material.get_shader_parameter("displacement") * 1.1), 0.0, 0.2))
+		if score % 2 == 0 and score > threshold:
+			$DistortionLocation2.material.set_shader_parameter("scrollRate", $DistortionLocation2.material.get_shader_parameter("scrollRate") + Vector2(0.2, 0.2))
+			$DistortionLocation2.material.set_shader_parameter("displacement", clamp(($DistortionLocation2.material.get_shader_parameter("displacement") * 1.15), 0.0, 0.2))
 		$MoveTimer.wait_time = clamp($MoveTimer.wait_time, 0.05, 0.2)
 		$Hud.get_node("ScoreLabel").text = "SCORE: " + str(score)
 		$GameOverMenu.get_node("FinalScoreLabel").text = "SCORE: " + str(score)
