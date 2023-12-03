@@ -8,10 +8,15 @@ var body
 # game variables
 var score := 0
 var game_started := false
+var noclipped := false
+var horizontal := false
+var boundA: Vector2
+var boundB: Vector2
 
 # grid variables
 const cells := 20
 const cell_size := 50
+var distortionPos: Vector2
 
 # food variables
 var food_pos: Vector2
@@ -46,6 +51,7 @@ func _ready():
 
 func new_game():
 	score = 0
+	noclipped = false
 	get_tree().paused = false
 	get_tree().call_group("segments", "queue_free")
 	$GameOverMenu.hide()
@@ -129,7 +135,14 @@ func _on_move_timer_timeout():
 	check_self_eaten()
 	check_food_eaten()
 	
+	
 func check_out_of_bounds():
+	if horizontal:
+		if (snake_data[0].x >= boundA.x and snake_data[0].x <= boundB.x) and (snake_data[0].y < 1 or snake_data[0].y > cells - 2):
+			noclipped = true
+	else:
+		if (snake_data[0].y >= boundA.y and snake_data[0].y <= boundB.y) and (snake_data[0].x < 1 or snake_data[0].x > cells - 2):
+			noclipped = true
 	if snake_data[0].x < 1 or snake_data[0].x > cells - 2 or snake_data[0].y < 1 or snake_data[0].y > cells - 2:
 		end_game()
 
@@ -169,26 +182,40 @@ func gen_distortion():
 	var placement = randi_range(0, 20)
 	var edges = [Vector2(placement, 20), Vector2(placement, 0), Vector2(20, placement), Vector2(0, placement)]
 	var placementNum = randi_range(0, edges.size() - 1)
-	var distortionPos: Vector2 = edges[placementNum]
+	distortionPos = edges[placementNum]
 	var noiseTexture: NoiseTexture2D = $DistortionLocation2.material.get_shader_parameter("distortionTexture")
 	if (placementNum < 2):
 		noiseTexture.width = 200
 		$DistortionLocation2.scale.x = 2
+		boundA.x = distortionPos.x - 2
+		boundA.y = distortionPos.y
+		boundB.x = distortionPos.x + 2
+		boundB.y = distortionPos.y
+		horizontal = true
 	else:
 		noiseTexture.height = 200
 		$DistortionLocation2.scale.y = 2
+		boundA.x = distortionPos.x
+		boundA.y = distortionPos.y - 2
+		boundB.x = distortionPos.x
+		boundB.y = distortionPos.y - 2
+		horizontal = false
 	$DistortionLocation2.position.x = distortionPos.x * cell_size
 	$DistortionLocation2.position.y = distortionPos.y * cell_size + 50
 	$DistortionLocation2.material.set_shader_parameter("scrollRate", Vector2(0.1, 0.1))
 	$DistortionLocation2.material.set_shader_parameter("displacement", 0.005)
-	
-
+	print(str(distortionPos))
 func end_game():
 	twoDTheme.stop()
-	$GameOverMenu.show()
-	$MoveTimer.stop()
-	game_started = false
-	get_tree().paused = true
+	if noclipped:
+		get_tree().change_scene_to_file("res://VideoEnvironment.tscn")
+	else:
+		$GameOverMenu.show()
+		$MoveTimer.stop()
+		gameOver.play()
+		await get_tree().create_timer(1.5).timeout
+		game_started = false
+		get_tree().paused = true
 	
 func _on_game_over_menu_restart():
 	for i in range(snake.size()):

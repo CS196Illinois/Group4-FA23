@@ -19,7 +19,7 @@ shader_parameter/scrollRate = Vector2(0, 0)
 shader_parameter/displacement = 0.0
 shader_parameter/distortionTexture = SubResource("NoiseTexture2D_kowoo")
 
-[node name="DistortionLocation2" type="Sprite2D"]
+[node name="Distortion" type="Sprite2D"]
 texture_repeat = 2
 material = SubResource("ShaderMaterial_dx4kc")
 texture = ExtResource("2_m7j4q")
