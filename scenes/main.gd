@@ -208,7 +208,7 @@ func gen_distortion():
 func end_game():
 	twoDTheme.stop()
 	if noclipped:
-		get_tree().change_scene_to_file("res://VideoEnvironment.tscn")
+		get_tree().change_scene_to_file("res://scenes/Video.tscn")
 	else:
 		$GameOverMenu.show()
 		$MoveTimer.stop()
