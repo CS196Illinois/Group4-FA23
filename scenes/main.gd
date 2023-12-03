@@ -1,6 +1,9 @@
 extends Node
 
-@export var snake_scene: PackedScene
+@export var snake_head = preload("res://Head.tscn")
+@export var snake_body = preload("res://Body.tscn")
+var snake_segment
+var body
 
 # game variables
 var score := 0
@@ -26,8 +29,10 @@ const up := Vector2(0, -1)
 const down := Vector2(0, 1)
 const left := Vector2(-1, 0)
 const right := Vector2(1, 0)
+const offset := Vector2(25, 25)
 var move_direction := up
 var can_move := true
+var rotated = false
 
 # Music variables
 @onready var twoDTheme = $twoDTheme
@@ -39,14 +44,15 @@ func _ready():
 	new_game()
 
 func new_game():
+	score = 0
 	get_tree().paused = false
 	get_tree().call_group("segments", "queue_free")
 	$GameOverMenu.hide()
 	$Hud.get_node("ScoreLabel").text = "SCORE: " + str(score)
 	$GameOverMenu.get_node("FinalScoreLabel").text = "SCORE: " + str(score)
-	$DistortionLocation2.material.set_shader_parameter("scrollRate", Vector2(0.1, 0.1))
-	$DistortionLocation2.material.set_shader_parameter("displacement", 0.00)
-	gen_distortion()
+	$DistortionLocation2.material.set_shader_parameter("displacement", 0.0)
+	$DistortionLocation2.position.x = 500
+	$DistortionLocation2.position.y = 550
 	generate_snake()
 	move_food()
 
@@ -55,15 +61,19 @@ func generate_snake():
 	snake_data.clear()
 	snake.clear()
 	#starting with the start_pos, create tail segments vertically down
-	for i in range(3):
-		add_segment(start_pos + down)
+	snake_data.append(start_pos)
+	snake_segment = snake_head.instantiate()
+	snake_segment.position = (start_pos  * cell_size) + Vector2(0, cell_size) + offset
+	add_child(snake_segment)
+	snake.append(snake_segment)
+		
 
 func add_segment(pos):
 	snake_data.append(pos)
-	var SnakeSegment = snake_scene.instantiate()
-	SnakeSegment.position = (pos * cell_size) + Vector2(0, cell_size)
-	add_child(SnakeSegment)
-	snake.append(SnakeSegment)
+	body = snake_body.instantiate()
+	body.position = (pos * cell_size) + Vector2(0, cell_size) + offset
+	add_child(body)
+	snake.append(body)
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -73,21 +83,25 @@ func move_snake():
 	if can_move:
 		#update mvmt from key press
 		if Input.is_action_just_pressed("move_down") and move_direction != up:
+			snake_segment.rotation_degrees = 90
 			move_direction = down
 			can_move = false
 			if (game_started == false):
 				start_game()
 		if Input.is_action_just_pressed("move_up") and move_direction != down:
+			snake_segment.rotation_degrees = -90
 			move_direction = up
 			can_move = false
 			if (game_started == false):
 				start_game()
 		if Input.is_action_just_pressed("move_left") and move_direction != right:
+			snake_segment.rotation_degrees = 180
 			move_direction = left
 			can_move = false
 			if (game_started == false):
 				start_game()
 		if Input.is_action_just_pressed("move_right") and move_direction != left:
+			snake_segment.rotation_degrees = 0
 			move_direction = right
 			can_move = false
 			if (game_started == false):
@@ -109,13 +123,13 @@ func _on_move_timer_timeout():
 		# move segs one by one
 		if i > 0:
 			snake_data[i] = old_data[i - 1]
-		snake[i].position = (snake_data[i] * cell_size) + Vector2(0, cell_size)
+		snake[i].position = (snake_data[i] * cell_size) + Vector2(0, cell_size) + offset
 	check_out_of_bounds()
 	check_self_eaten()
 	check_food_eaten()
 	
 func check_out_of_bounds():
-	if snake_data[0].x < 2 or snake_data[0].x > cells - 2 or snake_data[0].y < 1 or snake_data[0].y > cells - 2:
+	if snake_data[0].x < 1 or snake_data[0].x > cells - 2 or snake_data[0].y < 1 or snake_data[0].y > cells - 2:
 		end_game()
 
 func check_self_eaten():
@@ -129,10 +143,11 @@ func check_food_eaten():
 		appleCrunch.play()
 		$MoveTimer.wait_time = $MoveTimer.wait_time * 0.95
 		if score == 10:
-			$DistortionLocation2.material.set_shader_parameter("displacement", 0.005)
-		if score % 3 == 0:
+			gen_distortion()
+			
+		if score % 3 == 0 and score > 10:
 			$DistortionLocation2.material.set_shader_parameter("scrollRate", $DistortionLocation2.material.get_shader_parameter("scrollRate") + Vector2(0.1, 0.1))
-			$DistortionLocation2.material.set_shader_parameter("displacement", clamp(($DistortionLocation2.material.get_shader_parameter("displacement") + 0.005), 0.0, 0.2))
+			$DistortionLocation2.material.set_shader_parameter("displacement", clamp(($DistortionLocation2.material.get_shader_parameter("displacement") * 1.1), 0.0, 0.2))
 		$MoveTimer.wait_time = clamp($MoveTimer.wait_time, 0.05, 0.2)
 		$Hud.get_node("ScoreLabel").text = "SCORE: " + str(score)
 		$GameOverMenu.get_node("FinalScoreLabel").text = "SCORE: " + str(score)
@@ -163,6 +178,8 @@ func gen_distortion():
 		$DistortionLocation2.scale.y = 2
 	$DistortionLocation2.position.x = distortionPos.x * cell_size
 	$DistortionLocation2.position.y = distortionPos.y * cell_size + 50
+	$DistortionLocation2.material.set_shader_parameter("scrollRate", Vector2(0.1, 0.1))
+	$DistortionLocation2.material.set_shader_parameter("displacement", 0.005)
 	
 
 func end_game():
@@ -173,4 +190,6 @@ func end_game():
 	get_tree().paused = true
 	
 func _on_game_over_menu_restart():
+	for i in range(snake.size()):
+		snake[i].queue_free()
 	new_game()
