@@ -146,9 +146,9 @@ func check_food_eaten():
 		if score == threshold:
 			gen_distortion()
 			
-		if score % 2 == 0 and score > threshold:
-			$DistortionLocation2.material.set_shader_parameter("scrollRate", $DistortionLocation2.material.get_shader_parameter("scrollRate") + Vector2(0.2, 0.2))
-			$DistortionLocation2.material.set_shader_parameter("displacement", clamp(($DistortionLocation2.material.get_shader_parameter("displacement") * 1.15), 0.0, 0.2))
+		if score % 3 == 0 and score > threshold:
+			$DistortionLocation2.material.set_shader_parameter("scrollRate", $DistortionLocation2.material.get_shader_parameter("scrollRate") + Vector2(0.175, 0.175))
+			$DistortionLocation2.material.set_shader_parameter("displacement", clamp(($DistortionLocation2.material.get_shader_parameter("displacement") * 1.1), 0.0, 0.2))
 		$MoveTimer.wait_time = clamp($MoveTimer.wait_time, 0.05, 0.2)
 		$Hud.get_node("ScoreLabel").text = "SCORE: " + str(score)
 		$GameOverMenu.get_node("FinalScoreLabel").text = "SCORE: " + str(score)
